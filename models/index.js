@@ -7,14 +7,14 @@ const sequelize = new Sequelize(
     dbConfig.PASSWORD, {
         host: dbConfig.HOST,
         dialect: dbConfig.dialect,
-        operatorsAliases: false,
+        logging: false,
     pool: {
         max: dbConfig.pool.max,
         min: dbConfig.pool.min,
         acquire: dbConfig.pool.acquire,
         idle: dbConfig.pool.idle,
         }
-    }
+    },
 )
 
 sequelize.authenticate()
@@ -26,8 +26,11 @@ sequelize.authenticate()
 
 const db = {}
 db.Sequelize = Sequelize;
-db.sequelize = sequelize
+db.sequelize = sequelize;
 db.playerAccounts = require("./playerModel.js")(sequelize, DataTypes)
+db.chat = require("./chatModel.js")(sequelize, DataTypes, db.playerAccounts)
+db.accountPets = require("./petModel")(sequelize, DataTypes, db.playerAccounts)
+db.boosters = require("./boosterModel")(sequelize, DataTypes, db.playerAccounts)
 db.sequelize.sync({ force: false })
 .then(() => {
     console.log("Resync completed.")

@@ -1,39 +1,26 @@
-const fastify = require("fastify")({
-    logger: false,
+const app = require("fastify")({
+  logger: false,
 });
+const playerRoute = require("./routes/playerRoute.js")
+const petRoute = require("./routes/petRoute.js")
+const boosterRoute = require("./routes/boosterRoute.js")
+const chatRoute = require("./routes/chatRoute.js")
+const dominateRoute = require("./routes/dominateRoute")
 
-const Sequelize = require("sequelize");
-const { DataTypes } = Sequelize;
-const sequelize = new Sequelize('account', 'root', 'password', {
-    dialect: 'mysql'
-  }
-);
-  
-  
-//Accounts
-fastify.register(require("@fastify/mysql"), {
-    promise: true,
-    connectionString: "mysql://root:password@localhost/account",
-});
-
-
-accounts.sync().then(() => {
-  console.log("Synced successfully!")
-}).catch(() => {
-  console.log("Error syncing table and model!")
-});
+app.register(playerRoute, { prefix: '/PlayerAccount' });
+app.register(chatRoute)
+app.register(petRoute, { prefix: '/Pets' })
+app.register(boosterRoute, { prefix: '/booster' })
+app.register(dominateRoute, { prefix: '/Dominate' })
 
 
 const start = async () => {
-    try {
-      await fastify.listen({ port: 1000 });
-    } catch (err) {
-      fastify.log.error(err);
-    }
-    sequelize.authenticate().then(() => {
-      console.log("Sequelize connection successful!");
-    }).catch((err) => {
-      console.log("Error in sequelize connection!")
-    })
-  };
+  try {
+    console.log("Starting...")
+    await app.listen({ port: 3000 });
+    console.log('Server listening on port 3000');
+  } catch (err) {
+    app.log.error(err);
+  }
+};
 start();

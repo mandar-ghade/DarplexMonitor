@@ -28,7 +28,11 @@ module.exports = (sequelize, DataTypes) => {
           type: DataTypes.STRING,
           allowNull: true
         }
-      });
+      }, 
+      {
+        timestamps: false
+    }
+    );
     const AccountRank = sequelize.define('accountrank', {
         id: {
             type: DataTypes.INTEGER(11),
@@ -46,12 +50,14 @@ module.exports = (sequelize, DataTypes) => {
             type: DataTypes.INTEGER(1),
             defaultValue: 1,
             allowNull: true
-        }
+        }, 
+    }, {
+        timestamps: false
     });
     const AccountPunishment = sequelize.define('accountpunishment', {
         id: {
             type: DataTypes.INTEGER(11),
-            primary: true,
+            primaryKey: true,
             autoIncrement: true
         },
         accountId: {
@@ -91,10 +97,115 @@ module.exports = (sequelize, DataTypes) => {
             type: DataTypes.STRING(255),
             allowNull: true
         }
+    }, {
+        timestamps: false
+    });
+    const CustomBuild = sequelize.define('custombuild', {
+        id: {
+            type: DataTypes.INTEGER(11),
+            primaryKey: true,
+            autoIncrement: true
+        },
+        accountId: {
+            type: DataTypes.INTEGER(11)
+        },
+        Name: {
+            type: DataTypes.STRING(255)
+        },
+        Active: {
+            type: DataTypes.INTEGER(1)
+        },
+        CustomBuildNumber: {
+            type: DataTypes.INTEGER(11)
+        },
+        PvpClass: {
+            type: DataTypes.STRING(255)
+        },
+        SwordSkill: {
+            type: DataTypes.STRING(255)
+        },
+        SwordSkillLevel: {
+            type: DataTypes.INTEGER(11)
+        },
+        AxeSkill: {
+            type: DataTypes.STRING(255)
+        },
+        AxeSkillLevel: {
+            type: DataTypes.INTEGER(11)
+        },
+        BowSkill: {
+            type: DataTypes.STRING(255)
+        },
+        BowSkillLevel: {
+            type: DataTypes.INTEGER(11)
+        },
+        ClassPassiveASkill: {
+            type: DataTypes.STRING(255)
+        },
+        ClassPassiveASkillLevel: {
+            type: DataTypes.INTEGER(11)
+        },
+        ClassPassiveBSkill: {
+            type: DataTypes.STRING(255)
+        },
+        ClassPassiveBSkillLevel: {
+            type: DataTypes.INTEGER(11)
+        },
+        GlobalPassiveSkill: {
+            type: DataTypes.STRING(255)
+        },
+        GlobalPassiveSkillLevel: {
+            type: DataTypes.INTEGER(11)
+        },
+        SkillTokens: {
+            type: DataTypes.INTEGER(11)
+        },
+        ItemTokens: {
+            type: DataTypes.INTEGER(11)
+        }
+    },
+    {
+        timestamps: false
+    });
+    const CustomBuildSlot = sequelize.define('custombuildslot', {
+        id: {
+            type: DataTypes.INTEGER(11),
+            primaryKey: true,
+            autoIncrement: true,
+        },
+        accountId: {
+            type: DataTypes.INTEGER(11)
+        },
+        BuildName: {
+            type: DataTypes.STRING(255)
+        },
+        PvpClass: {
+            type: DataTypes.STRING(255)
+        },
+        SlotId: {
+            type: DataTypes.INTEGER(11)
+        },
+        Name: {
+            type: DataTypes.STRING(255),
+            defaultValue: ""
+        },
+        Material: {
+            type: DataTypes.STRING(255),
+            defaultValue: "",
+        },
+        Amount: {
+            type: DataTypes.INTEGER(11),
+            defaultValue: 0
+        }
+    },
+    {
+        timestamps: false
     });
     return {
         Account,
         AccountRank,
-        AccountPunishment
+        AccountPunishment,
+        CustomBuild,
+        CustomBuildSlot
     }
 }
