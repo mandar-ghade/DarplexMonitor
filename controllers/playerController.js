@@ -56,8 +56,11 @@ const login = async (request) => {
 const saveCustomBuild = async (request) => {
     const { PlayerName, Name, Active, CustomBuildNumber, PvpClass, SwordSkill, SwordSkillLevel, AxeSkill, AxeSkillLevel, BowSkill, BowSkillLevel, ClassPassiveASkill, ClassPassiveASkillLevel, ClassPassiveBSkill, ClassPassiveBSkillLevel, GlobalPassiveSkill, GlobalPassiveSkillLevel, Slots, SkillTokens, ItemTokens } = request.body;
     const accountId = await getIdByName(PlayerName);
-    const additionalParams = { Active, CustomBuildNumber, SwordSkill, SwordSkillLevel, AxeSkill, AxeSkillLevel, BowSkill, BowSkillLevel, ClassPassiveASkill, ClassPassiveASkillLevel, ClassPassiveBSkill, ClassPassiveBSkillLevel, GlobalPassiveSkill, GlobalPassiveSkillLevel, SkillTokens, ItemTokens};
+    let additionalParams = { Active, CustomBuildNumber, SwordSkill, SwordSkillLevel, AxeSkill, AxeSkillLevel, BowSkill, BowSkillLevel, ClassPassiveASkill, ClassPassiveASkillLevel, ClassPassiveBSkill, ClassPassiveBSkillLevel, GlobalPassiveSkill, GlobalPassiveSkillLevel, SkillTokens, ItemTokens};
     if(await userBuildExists(accountId, Name, PvpClass)) {
+        if (CustomBuildNumber == 0) {
+            additionalParams = { Active, SwordSkill, SwordSkillLevel, AxeSkill, AxeSkillLevel, BowSkill, BowSkillLevel, ClassPassiveASkill, ClassPassiveASkillLevel, ClassPassiveBSkill, ClassPassiveBSkillLevel, GlobalPassiveSkill, GlobalPassiveSkillLevel, SkillTokens, ItemTokens};
+        }
         await updateBuild(accountId, Name, PvpClass, additionalParams);
     } else {
         const createParams = { Name, Active, CustomBuildNumber, PvpClass, SwordSkill, SwordSkillLevel, AxeSkill, AxeSkillLevel, BowSkill, BowSkillLevel, ClassPassiveASkill, ClassPassiveASkillLevel, ClassPassiveBSkill, ClassPassiveBSkillLevel, GlobalPassiveSkill, GlobalPassiveSkillLevel, SkillTokens, ItemTokens };
@@ -71,7 +74,7 @@ const gemReward = async (request) => {
     const amount = request.body.Amount;
     const accountInfo = await getAccountByName(name);
     await updateGems(name, accountInfo[0].gems + amount);
-    return "Success"
+    return "True"
 }
 
 const coinReward = async (request) => {
@@ -79,7 +82,7 @@ const coinReward = async (request) => {
     const amount = request.body.Amount;
     const accountInfo = await getAccountByName(name);
     await updateCoins(name, accountInfo[0].coins + amount);
-    return "Success"
+    return "True"
 }
 
 const getPunishClient = async (request) => {

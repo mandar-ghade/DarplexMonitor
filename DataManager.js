@@ -184,7 +184,8 @@ const updateSlots = async (id, BuildName, PvpClass, slots) => {
         slot.SlotId = i+1;
         if (await duplicateSlotExists(id, BuildName, PvpClass, slot)) {
             return
-        } else if (slotOccupied(id, BuildName, PvpClass, slot)) {
+        } 
+        if (await slotOccupied(id, BuildName, PvpClass, slot)) {
             await updateExistingSlot(id, BuildName, PvpClass, slot)
         } else {
             await createSlot(id, BuildName, PvpClass, slot)
@@ -204,7 +205,8 @@ const returnAllCustomBuilds = async (id) => {
         token.CustomBuildId = 0
         token.PlayerName = name[0].name;
         token.Name = build.Name
-        token.Active = build.Active
+        const isActive = build.Active == 1
+        token.Active = isActive
         token.CustomBuildNumber = build.CustomBuildNumber
         token.PvpClass = build.PvpClass
         token.SwordSkill = build.SwordSkill

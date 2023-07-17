@@ -17,8 +17,8 @@ app.register(dominateRoute, { prefix: '/Dominate' })
 const start = async () => {
   try {
     console.log("Starting...")
-    await app.listen({ port: 3000 });
-    console.log('Server listening on port 3000');
+    await app.listen({ port: 1000 });
+    console.log('Server listening on port 1000');
   } catch (err) {
     app.log.error(err);
   }

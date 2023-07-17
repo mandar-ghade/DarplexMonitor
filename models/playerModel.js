@@ -40,7 +40,13 @@ module.exports = (sequelize, DataTypes) => {
             autoIncrement: true
         },
         accountId: {
-            type: DataTypes.INTEGER(11)
+            type: DataTypes.INTEGER(11),
+            references: {
+                model: Account,
+                key: 'id',
+                onDelete: 'CASCADE',
+                onUpdate: 'CASCADE'
+            }
         },
         rankIdentifier: {
             type: DataTypes.STRING(40),
@@ -61,7 +67,13 @@ module.exports = (sequelize, DataTypes) => {
             autoIncrement: true
         },
         accountId: {
-            type: DataTypes.INTEGER(11)
+            type: DataTypes.INTEGER(11),
+            references: {
+                model: Account,
+                key: 'id',
+                onDelete: 'CASCADE',
+                onUpdate: 'CASCADE'
+            }
         },
         category: {
             type: DataTypes.STRING(255)
@@ -107,7 +119,13 @@ module.exports = (sequelize, DataTypes) => {
             autoIncrement: true
         },
         accountId: {
-            type: DataTypes.INTEGER(11)
+            type: DataTypes.INTEGER(11),
+            references: {
+                model: Account,
+                key: 'id',
+                onDelete: 'CASCADE',
+                onUpdate: 'CASCADE'
+            }
         },
         Name: {
             type: DataTypes.STRING(255)
@@ -174,7 +192,13 @@ module.exports = (sequelize, DataTypes) => {
             autoIncrement: true,
         },
         accountId: {
-            type: DataTypes.INTEGER(11)
+            type: DataTypes.INTEGER(11),
+            references: {
+                model: Account,
+                key: 'id',
+                onDelete: 'CASCADE',
+                onUpdate: 'CASCADE'
+            }
         },
         BuildName: {
             type: DataTypes.STRING(255)
@@ -201,6 +225,26 @@ module.exports = (sequelize, DataTypes) => {
     {
         timestamps: false
     });
+    Account.hasOne(AccountRank, {
+        onDelete: 'CASCADE',
+        onUpdate: 'CASCADE'
+    });
+    Account.hasOne(AccountPunishment, {
+        onDelete: 'CASCADE',
+        onUpdate: 'CASCADE'
+    });
+    Account.hasOne(CustomBuild, {
+        onDelete: 'CASCADE',
+        onUpdate: 'CASCADE'
+    });
+    Account.hasOne(CustomBuildSlot, {
+        onDelete: 'CASCADE',
+        onUpdate: 'CASCADE'
+    });
+    AccountRank.belongsTo(Account);
+    AccountPunishment.belongsTo(Account);
+    CustomBuild.belongsTo(Account);
+    CustomBuildSlot.belongsTo(Account);
     return {
         Account,
         AccountRank,

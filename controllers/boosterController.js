@@ -20,7 +20,7 @@ const addBooster = async (request) => {
     await addBoosterToDb(params)
     return {
         success: true,
-        startTime: startTime
+        startTime: new Date(startTime).toISOString()
     }
 }
 
