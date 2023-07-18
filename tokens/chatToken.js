@@ -1,16 +1,12 @@
 function AntiSpamResponseToken () {
-    this.isShadowMuted = false
-}
+    this.isShadowMuted = false;
+};
 
-let response = {
-    content: {
-        parts: []
-    }
-}
 
 function ChatFilterResponseToken () {
-    this.content = {}
-    this.content.parts = []
-}
+    this.content = {};
+    this.content.parts = [];
+};
 
-module.exports = { AntiSpamResponseToken, ChatFilterResponseToken }
+
+module.exports = { AntiSpamResponseToken, ChatFilterResponseToken };

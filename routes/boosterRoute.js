@@ -1,17 +1,13 @@
-const boosterController = require("../controllers/boosterController.js")
-const boosterSchema = require("../schemas/boosterSchema.js")
-const fastify = require("fastify")({
-    logger: false,
-});
+const boosterController = require("../controllers/boosterController.js");
+const boosterSchema = require("../schemas/boosterSchema.js");
+const fastify = require("fastify")({ logger: false });
 
-const boosterRoutePlugin = function (fastify, _, done) {
+const boosterRoutePlugin = (fastify, _, done) => {
     fastify.route({
         method: 'POST',
         url: '/:boosterGroup',
         handler: boosterController.addBooster,
-        schema: {
-            body: boosterSchema.addBoosterSchema.body
-        }
+        schema: { body: boosterSchema.addBoosterSchema.body }
     });
     fastify.route({
         method: 'GET',
@@ -23,8 +19,6 @@ const boosterRoutePlugin = function (fastify, _, done) {
         url: '/',
         handler: boosterController.getAllBoosters
     });
-    
-    done()
-}
-
+    done();
+};
 module.exports = boosterRoutePlugin;

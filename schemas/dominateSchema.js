@@ -17,5 +17,5 @@ const DominateSkillsSchema = {
             },
         }
     }
-}
-module.exports = { DominateSkillsSchema }
+};
+module.exports = { DominateSkillsSchema };

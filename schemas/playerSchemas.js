@@ -6,7 +6,7 @@ const loginSchema = {
             Uuid: { type: "string" },
         },
     }
-}
+};
 const punishSchema = {
     body: {
         type: "object",
@@ -20,7 +20,7 @@ const punishSchema = {
             Severity: { type: "integer" },
         },
     },
-}
+};
 const removePunishmentSchema = {
     body: {
         type: "object",
@@ -31,7 +31,7 @@ const removePunishmentSchema = {
             Admin: { type: "string" },
         },
     }
-}
+};
 const rewardSchema = {
     body: {
         type: "object",
@@ -41,16 +41,13 @@ const rewardSchema = {
             Amount: { type: "integer" },
         },
     },
-}
-
+};
 const getMatchesSchema = {
     body: {
         type: "string",
     }
-}
-
+};
 const punishClientSchema = getMatchesSchema;
-
 const unknownSalesPackageSchema = {
     body: {
         type: "object",
@@ -62,8 +59,7 @@ const unknownSalesPackageSchema = {
             Premium: { type: "boolean" },
         },
     },
-}
-
+};
 const clientClassSchema = {
     body: {
         type: "object",
@@ -101,10 +97,7 @@ const clientClassSchema = {
             ItemTokens: { type: "integer" }
         }
     }
-}
-
-
-
+};
 module.exports = {
     loginSchema,
     clientClassSchema,
@@ -114,4 +107,4 @@ module.exports = {
     punishSchema,
     removePunishmentSchema,
     unknownSalesPackageSchema
-}
+};

@@ -1,10 +1,10 @@
 const {
     getModifiedSkills
-} = require("../DataManager.js")
+} = require("../DataManager.js");
 
-const getSkills = async (request) => {
-    const skills = request.body;
-    return await getModifiedSkills(skills)
+const getSkills = async req => {
+    const skills = req.body;
+    return await getModifiedSkills(skills);
 }
 
-module.exports = { getSkills }
+module.exports = { getSkills };

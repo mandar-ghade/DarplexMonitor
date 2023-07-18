@@ -1,26 +1,20 @@
-const { getIdByName, isShadowMuted, filterMessages } = require("../DataManager.js")
-const { AntiSpamResponseToken, ChatFilterResponseToken } = require("../tokens/chatToken.js")
+const { getIdByName, isShadowMuted, filterMessages } = require("../DataManager.js");
+const { AntiSpamResponseToken, ChatFilterResponseToken } = require("../tokens/chatToken.js");
 
 
-const getShadowMutes = async (request) => {
-    const server = request.params.pluginName;
-    const playerName = request.body._playerName;
+const getShadowMutes = async req => {
+    const server = req.params.pluginName;
+    const playerName = req.body._playerName;
     const accountId = await getIdByName(playerName);
-    if(!accountId) {
-        return null
-    }
+    if (!accountId) return null;
     let token = new AntiSpamResponseToken();
     const shadowMuted = await isShadowMuted(accountId, server);
-    if(shadowMuted) {
-        token.isShadowMuted = true;
-    } else {
-        token.isShadowMuted = false;
-    }
+    token.isShadowMuted = shadowMuted;
     return token;
 }
 
-const filterMessage = async (request) => {
-    const messages = request.body.content.parts;
+const filterMessage = async req => {
+    const messages = req.body.content.parts;
     return await filterMessages(messages);
 }
 

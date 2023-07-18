@@ -5,9 +5,9 @@ const {
     returnNewBoosterStartTime
 } = require("../DataManager.js")
 
-const addBooster = async (request) => {
-    const { accountId, uuid, playerName, duration } = request.body;
-    const boosterGroup = request.params.boosterGroup;
+const addBooster = async req => {
+    const { accountId, uuid, playerName, duration } = req.body;
+    const boosterGroup = req.params.boosterGroup;
     const startTime = await returnNewBoosterStartTime(boosterGroup);
     const params = {
         accountId,
@@ -16,16 +16,16 @@ const addBooster = async (request) => {
         activatorName: playerName,
         startTime,
         duration
-    }
-    await addBoosterToDb(params)
+    };
+    await addBoosterToDb(params);
     return {
         success: true,
         startTime: new Date(startTime).toISOString()
-    }
+    };
 }
 
-const getBoostersByGroup = async (request) => {
-    const boosterGroup = request.params.boosterGroup;
+const getBoostersByGroup = async (req) => {
+    const boosterGroup = req.params.boosterGroup;
     return await returnBoostersInGroup(boosterGroup);
 }
 

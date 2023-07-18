@@ -20,7 +20,8 @@ function ClientClassToken () {
     this.Slots = [];
     this.SkillTokens = 0;
     this.ItemTokens = 0;
-}
+};
+
 
 function DonorToken () {
     this.DonorToken = {
@@ -34,16 +35,20 @@ function DonorToken () {
         Pets: [],
         PetNameTagCount: 0,
     }
-}
+};
+
+
 function LoginToken () {
     this.LastLogin = Date.now();
     this.Rank = "PLAYER";
     this.DonorToken = new DonorToken().DonorToken;
     this.Time = 0
     this.Punishments = []
-}
+};
+
+
 module.exports = {
     LoginToken,
     DonorToken,
     ClientClassToken
-}
+};

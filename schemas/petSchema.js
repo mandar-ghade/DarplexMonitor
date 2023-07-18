@@ -7,5 +7,5 @@ const petSchema = {
             PetType: {type: "string"}
         }
     }
-}
-module.exports = petSchema
+};
+module.exports = petSchema;

@@ -9,8 +9,7 @@ const antiSpamSchema = {
             _time: {type: 'integer'}
         }
     }
-}
-
+};
 const chatFilterSchema = {
     body: {
         type: 'object',
@@ -31,6 +30,5 @@ const chatFilterSchema = {
             }
         }
     }
-}
-
-module.exports = { antiSpamSchema, chatFilterSchema }
+};
+module.exports = { antiSpamSchema, chatFilterSchema };

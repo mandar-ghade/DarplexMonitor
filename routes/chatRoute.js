@@ -1,27 +1,21 @@
-const chatController = require("../controllers/chatController.js")
-const chatSchema = require("../schemas/chatSchema.js")
-const fastify = require("fastify")({
-    logger: false,
-});
+const chatController = require("../controllers/chatController.js");
+const chatSchema = require("../schemas/chatSchema.js");
+const fastify = require("fastify")({ logger: false });
 
 
-const chatRoutePlugin = function (fastify, _, done) {
+const chatRoutePlugin = (fastify, _, done) => {
     fastify.route({
         method: 'POST',
         url: '/chat/:pluginName',
         handler: chatController.getShadowMutes,
-        schema: {
-            body: chatSchema.antiSpamSchema.body
-        }
+        schema: { body: chatSchema.antiSpamSchema.body }
     });
     fastify.route({
         method: 'POST',
         url: '/content/item/moderate',
         handler: chatController.filterMessage,
-        schema: {
-            body: chatSchema.chatFilterSchema.body
-        }
+        schema: { body: chatSchema.chatFilterSchema.body }
     });
     done();
-}
-module.exports = chatRoutePlugin
+};
+module.exports = chatRoutePlugin;

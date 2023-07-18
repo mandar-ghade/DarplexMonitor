@@ -1,5 +1,5 @@
-const playerToken = require("../tokens/playerTokens.js")
-const petController = require("./petController.js")
+const playerToken = require("../tokens/playerTokens.js");
+const petController = require("./petController.js");
 const {
     getIdByName,
     getAccountByName,
@@ -19,9 +19,9 @@ const {
     doPurchaseUnknownSalesPackage
 } = require("../DataManager.js");
 
-const login = async (request) => {
-    const name = request.body.Name;
-    const uuid = request.body.Uuid;
+const login = async req => {
+    const name = req.body.Name;
+    const uuid = req.body.Uuid;
     let accountInfo;
     if (!uuid) {
         accountInfo = await getAccountByName(name);
@@ -29,16 +29,14 @@ const login = async (request) => {
         accountInfo = await getAccountByUuid(uuid);
     }
     let token = new playerToken.LoginToken();
-    if(accountInfo.length == 0) {
-        return token;
-    }
+    if (accountInfo.length === 0) return token;
     const id = accountInfo[0].id;
     const dbName = accountInfo[0].name;
     const gems = accountInfo[0].gems;
     const coins = accountInfo[0].coins;
     token.AccountId = id;
     token.Name = dbName;
-    if(name != dbName) {
+    if (name !== dbName) {
         await updateOldUsername(name, uuid);
         token.Name = name;
     }
@@ -49,97 +47,88 @@ const login = async (request) => {
     let petInfo = await petController.retrieveAllPets(id);
     token.DonorToken.Pets = petInfo;
     token.DonorToken.PetNameTagCount = petInfo.length;
-    token.DonorToken.CustomBuilds = await returnAllCustomBuilds(id)
+    token.DonorToken.CustomBuilds = await returnAllCustomBuilds(id);
     return token;
 }
 
-const saveCustomBuild = async (request) => {
-    const { PlayerName, Name, Active, CustomBuildNumber, PvpClass, SwordSkill, SwordSkillLevel, AxeSkill, AxeSkillLevel, BowSkill, BowSkillLevel, ClassPassiveASkill, ClassPassiveASkillLevel, ClassPassiveBSkill, ClassPassiveBSkillLevel, GlobalPassiveSkill, GlobalPassiveSkillLevel, Slots, SkillTokens, ItemTokens } = request.body;
+const saveCustomBuild = async req => {
+    const { PlayerName, Name, CustomBuildNumber, PvpClass, Slots, ...additionalParams } = req.body;
     const accountId = await getIdByName(PlayerName);
-    let additionalParams = { Active, CustomBuildNumber, SwordSkill, SwordSkillLevel, AxeSkill, AxeSkillLevel, BowSkill, BowSkillLevel, ClassPassiveASkill, ClassPassiveASkillLevel, ClassPassiveBSkill, ClassPassiveBSkillLevel, GlobalPassiveSkill, GlobalPassiveSkillLevel, SkillTokens, ItemTokens};
-    if(await userBuildExists(accountId, Name, PvpClass)) {
-        if (CustomBuildNumber == 0) {
-            additionalParams = { Active, SwordSkill, SwordSkillLevel, AxeSkill, AxeSkillLevel, BowSkill, BowSkillLevel, ClassPassiveASkill, ClassPassiveASkillLevel, ClassPassiveBSkill, ClassPassiveBSkillLevel, GlobalPassiveSkill, GlobalPassiveSkillLevel, SkillTokens, ItemTokens};
-        }
+    if (await userBuildExists(accountId, Name, PvpClass)) {
+        if (CustomBuildNumber !== 0) additionalParams.CustomBuildNumber = CustomBuildNumber;
         await updateBuild(accountId, Name, PvpClass, additionalParams);
     } else {
-        const createParams = { Name, Active, CustomBuildNumber, PvpClass, SwordSkill, SwordSkillLevel, AxeSkill, AxeSkillLevel, BowSkill, BowSkillLevel, ClassPassiveASkill, ClassPassiveASkillLevel, ClassPassiveBSkill, ClassPassiveBSkillLevel, GlobalPassiveSkill, GlobalPassiveSkillLevel, SkillTokens, ItemTokens };
-        await createBuild(accountId, createParams);
+        await createBuild(accountId, { Name, CustomBuildNumber, PvpClass, ...additionalParams });
     }
     await updateSlots(accountId, Name, PvpClass, Slots);
 }
 
-const gemReward = async (request) => {
-    const name = request.body.Name;
-    const amount = request.body.Amount;
+const gemReward = async req => {
+    const name = req.body.Name;
+    const amount = req.body.Amount;
     const accountInfo = await getAccountByName(name);
     await updateGems(name, accountInfo[0].gems + amount);
-    return "True"
+    return "True";
 }
 
-const coinReward = async (request) => {
-    const name = request.body.Name;
-    const amount = request.body.Amount;
+const coinReward = async req => {
+    const name = req.body.Name;
+    const amount = req.body.Amount;
     const accountInfo = await getAccountByName(name);
     await updateCoins(name, accountInfo[0].coins + amount);
-    return "True"
+    return "True";
 }
 
-const getPunishClient = async (request) => {
-    const name = request.body
-    const id = await getIdByName(name)
+const getPunishClient = async req => {
+    const name = req.body;
+    const id = await getIdByName(name);
     return {
         Name: name,
         Punishments: await returnAllPunishments(id)
-    }
-}
-
-const getMatches = async (request) => {
-    const name = request.body
-    if(!await getIdByName(name)) return [];
-    return `[${name}]`
-}
-
-
-const punish = async (request) => {
-    const { Target, Category, Sentence, Reason, Duration, Admin, Severity } = request.body;
-    const accountId = await getIdByName(Target);
-    if(!accountId) {
-        return "AccountDoesNotExist"
-    }
-    const insertParams = { 
-        accountId, 
-        target: Target, 
-        category: Category, 
-        sentence: Sentence, 
-        reason: Reason, 
-        duration: Duration, 
-        admin: Admin, 
-        severity: Severity 
     };
-    await doPunish(insertParams)
-    return "Punished"
+}
+
+const getMatches = async req => {
+    const name = req.body;
+    if(!await getIdByName(name)) return [];
+    return `[${name}]`;
 }
 
 
-const removePunishment = async (request) => {
-    const { Target, Reason, Admin } = request.body;
+const punish = async req => {
+    const { Target, Category, Sentence, Reason, Duration, Admin, Severity } = req.body;
     const accountId = await getIdByName(Target);
-    console.log(accountId)
+    if (!accountId) return "AccountDoesNotExist";
+    const insertParams = {
+        accountId,
+        target: Target,
+        category: Category,
+        sentence: Sentence,
+        reason: Reason,
+        duration: Duration,
+        admin: Admin,
+        severity: Severity
+    };
+    await doPunish(insertParams);
+    return "Punished";
+}
+
+
+const removePunishment = async req => {
+    const { Target, Reason, Admin } = req.body;
+    const accountId = await getIdByName(Target);
     await doRemovePunishment(accountId, Reason, Admin);
     return "PunishmentRemoved";
 }
 
 
-const purchaseUnknownSalesPackage = async (request) => {
-    const { AccountName, Cost } = request.body;
+const purchaseUnknownSalesPackage = async req => {
+    const { AccountName, Cost } = req.body;
     const accountInfo = await getAccountByName(AccountName);
     const coins = accountInfo[0].coins;
-    if(coins < Cost) {
-        return "InsufficientFunds"
-    }
+    if (coins < Cost) return "InsufficientFunds";
     await doPurchaseUnknownSalesPackage(AccountName, coins - Cost);
-    return "Success"
+    return "Success";
 }
 
 

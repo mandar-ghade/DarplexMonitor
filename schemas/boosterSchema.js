@@ -9,5 +9,4 @@ const addBoosterSchema = {
         },
     }
 };
-
-module.exports = { addBoosterSchema }
+module.exports = { addBoosterSchema };
