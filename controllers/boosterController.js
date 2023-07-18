@@ -3,7 +3,7 @@ const {
     returnAllBoosters,
     returnBoostersInGroup,
     returnNewBoosterStartTime
-} = require("../DataManager.js")
+} = require("../DataManager.js");
 
 const addBooster = async req => {
     const { accountId, uuid, playerName, duration } = req.body;
@@ -22,19 +22,19 @@ const addBooster = async req => {
         success: true,
         startTime: new Date(startTime).toISOString()
     };
-}
+};
 
 const getBoostersByGroup = async (req) => {
     const boosterGroup = req.params.boosterGroup;
     return await returnBoostersInGroup(boosterGroup);
-}
+};
 
 const getAllBoosters = async () => {
     return await returnAllBoosters();
-}
+};
 
 module.exports = {
     addBooster,
     getBoostersByGroup,
     getAllBoosters
-}
+};
