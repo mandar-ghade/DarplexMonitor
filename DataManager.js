@@ -204,14 +204,14 @@ const returnAllCustomBuilds = async id => {
         token.ClassPassiveBSkillLevel = build.ClassPassiveBSkillLevel;
         token.GlobalPassiveSkill = build.GlobalPassiveSkill;
         token.GlobalPassiveSkillLevel = build.GlobalPassiveSkillLevel;
-        token.Slots = await CustomBuildSlot.findAll({
+        token.Slots = (await CustomBuildSlot.findAll({
             where: {
                 accountId: id,
                 BuildName: build.Name,
                 PvpClass: build.PvpClass
             },
             order: [['SlotId', 'ASC']]
-        }).map(slot => ({
+        })).map(slot => ({
             Name: slot.Name,
             Material: slot.Material,
             Amount: slot.Amount
