@@ -1,7 +1,3 @@
-# DarplexMonitor
-Webserver monitor used on Darplex Network.
-
-
 Darplex Monitor
 ============
 [![GitHub Stars](https://img.shields.io/github/stars/GX2H912/DarplexMonitor.svg)](https://github.com/GX2H912/DarplexMonitor/stargazers) [![GitHub Issues](https://img.shields.io/github/issues/GX2H912/DarplexMonitor.svg)](https://github.com/GX2H912/DarplexMonitor/issues) [![Current Version](https://img.shields.io/badge/version-1.0-green.svg)](https://github.com/GX2H912/DarplexMonitor) [![Live Demo](https://img.shields.io/badge/demo-online-green.svg)](https://GX2H912.com/chat) [![Gitter](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/GX2H912/DarplexMonitor?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge)
