@@ -1,4 +1,5 @@
 const app = require("fastify")({ logger: false });
+const dbConfig = require('./config/dbConfig.js');
 const playerRoute = require("./routes/playerRoute.js")
 const petRoute = require("./routes/petRoute.js")
 const boosterRoute = require("./routes/boosterRoute.js")
@@ -14,8 +15,8 @@ app.register(dominateRoute, { prefix: '/Dominate' })
 const start = async () => {
   try {
     console.log("Starting...")
-    await app.listen({ port: 1000 });
-    console.log('Server listening on port 1000');
+    await app.listen({ port: dbConfig.WEBSERVER_PORT });
+    console.log(`Server listening on port ${dbConfig.WEBSERVER_PORT}`);
   } catch (err) {
     app.log.error(err);
   }
