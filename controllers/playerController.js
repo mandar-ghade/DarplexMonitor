@@ -20,16 +20,23 @@ const {
 } = require("../DataManager.js");
 
 const login = async req => {
-    const name = req.body.Name;
-    const uuid = req.body.Uuid;
+    let uuid;
+    if((!req.body.uuid && !req.body.Name)) {
+        uuid = req.body;
+    } else if (!req.body.Name) {
+        uuid = req.body.Uuid;
+    }
+    let name;
     let accountInfo;
     if (!uuid) {
+        name = req.body.Name;
         accountInfo = await getAccountByName(name);
     } else {
         accountInfo = await getAccountByUuid(uuid);
     }
     let token = new playerToken.LoginToken();
     if (accountInfo.length === 0) return token;
+    if(!name) name = accountInfo[0].name;
     const id = accountInfo[0].id;
     const dbName = accountInfo[0].name;
     const gems = accountInfo[0].gems;

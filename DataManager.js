@@ -35,9 +35,9 @@ const getAccountByName = async name => {
 }
 
 const getAccountByUuid = async uuid => {
-    return await Account.findAll({
-        where: { uuid }
-    });
+    return await Account.findAll(
+        { where: { uuid } }
+    );
 }
 
 const updateOldUsername = async (newName, uuid) => {

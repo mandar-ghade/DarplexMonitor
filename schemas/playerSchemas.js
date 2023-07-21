@@ -7,6 +7,11 @@ const loginSchema = {
         },
     }
 };
+const alternateLoginSchema = {
+    body: {
+        type: "string"
+    }
+}
 const punishSchema = {
     body: {
         type: "object",
@@ -100,6 +105,7 @@ const clientClassSchema = {
 };
 module.exports = {
     loginSchema,
+    alternateLoginSchema,
     clientClassSchema,
     rewardSchema,
     punishClientSchema,

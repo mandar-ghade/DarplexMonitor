@@ -14,13 +14,13 @@ const playerRoutePlugin = (fastify, _, done) => {
         method: 'POST',
         url: '/GetAccountByUUID',
         handler: playerController.login,
-        schema: { body: playerSchema.loginSchema.body }
+        schema: { body: playerSchema.alternateLoginSchema.body }
     });
     fastify.route({
         method: 'POST',
         url: '/GetAccount',
         handler: playerController.login,
-        schema: { body: playerSchema.loginSchema.body }
+        schema: { body: playerSchema.alternateLoginSchema.body }
     });
     fastify.route({
         method: 'POST',
