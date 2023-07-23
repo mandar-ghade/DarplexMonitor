@@ -21,7 +21,7 @@ const {
 
 const login = async req => {
     let uuid;
-    if((!req.body.uuid && !req.body.Name)) {
+    if((!req.body.Uuid && !req.body.Name)) {
         uuid = req.body;
     } else if (!req.body.Name) {
         uuid = req.body.Uuid;
