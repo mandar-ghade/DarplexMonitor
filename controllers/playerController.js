@@ -16,7 +16,9 @@ const {
     updateCoins,
     doPunish,
     doRemovePunishment,
-    doPurchaseUnknownSalesPackage
+    doPurchaseUnknownSalesPackage,
+    validUuid,
+    getNameByUuid
 } = require("../DataManager.js");
 
 const login = async req => {
@@ -35,7 +37,12 @@ const login = async req => {
         accountInfo = await getAccountByUuid(uuid);
     }
     let token = new playerToken.LoginToken();
-    if (accountInfo.length === 0) return token;
+    if (accountInfo.length === 0) { 
+        if (await validUuid(uuid) && uuid) {
+            token.Name = await getNameByUuid(uuid);
+        }
+        return token;
+    };
     if(!name) name = accountInfo[0].name;
     const id = accountInfo[0].id;
     const dbName = accountInfo[0].name;

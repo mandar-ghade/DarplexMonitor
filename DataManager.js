@@ -378,9 +378,23 @@ const getModifiedSkills = async skills => {
         };
         return modifiedSkill;
     });
-    return modifiedSkills
+    return modifiedSkills;
 }
 
+const validUuid = async uuid => {
+    if (!uuid) return null;
+    const url = `https://api.mojang.com/user/profile/${uuid}/`;
+    const response = await fetch(url);
+    const data = await response.json();
+    return (!data.errorMessage);
+}
+
+const getNameByUuid = async uuid => {
+    const url = `https://api.mojang.com/user/profile/${uuid}/`;
+    const response = await fetch(url);
+    const data = await response.json();
+    return data.name;
+}
 
 
 module.exports = {
@@ -406,5 +420,7 @@ module.exports = {
     returnNewBoosterStartTime,
     isShadowMuted,
     filterMessages,
-    getModifiedSkills
+    getModifiedSkills,
+    validUuid,
+    getNameByUuid
   };
