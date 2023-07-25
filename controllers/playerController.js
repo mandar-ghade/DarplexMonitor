@@ -1,5 +1,6 @@
 const playerToken = require("../tokens/playerTokens.js");
 const petController = require("./petController.js");
+const logger = require("../logging.js");
 const {
     getIdByName,
     getAccountByName,
@@ -22,6 +23,7 @@ const {
 } = require("../DataManager.js");
 
 const login = async req => {
+    console.log(req.body)
     let uuid;
     if((!req.body.Uuid && !req.body.Name)) {
         uuid = req.body;
@@ -67,14 +69,25 @@ const login = async req => {
 
 const saveCustomBuild = async req => {
     const { PlayerName, Name, CustomBuildNumber, PvpClass, Slots, ...additionalParams } = req.body;
+    logger.log('PlayerAccount - SaveCustomBuild', ``, true, false, false, true);
     const accountId = await getIdByName(PlayerName);
+    logger.log('', `User: ${PlayerName}`, false, true, false, false);
+    logger.log('', `ID: ${accountId}`, false, true, false, false);
+    logger.log('', `Class: ${PvpClass}`, false, true, false, false);
+    logger.log('', `${Name}`, false, true, false, false);
     if (await userBuildExists(accountId, Name, PvpClass)) {
         if (CustomBuildNumber !== 0) additionalParams.CustomBuildNumber = CustomBuildNumber;
+        logger.log('', 'Awaiting build update', false, true, false, false);
         await updateBuild(accountId, Name, PvpClass, additionalParams);
+        logger.log('', 'Build updated', false, true, false, false);
     } else {
+        logger.log('', 'Awaiting build creation', false, true, false, false);
         await createBuild(accountId, { Name, CustomBuildNumber, PvpClass, ...additionalParams });
+        logger.log('', 'Build created', false, true, false, false);
     }
+    logger.log('', `Awaiting slot updates`, false, true, false, false);
     await updateSlots(accountId, Name, PvpClass, Slots);
+    logger.log('', 'Slots updated', false, true, true, false);
 }
 
 const gemReward = async req => {

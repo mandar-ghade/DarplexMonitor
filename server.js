@@ -14,9 +14,15 @@ app.register(boosterRoute, { prefix: '/booster' })
 app.register(dominateRoute, { prefix: '/Dominate' })
 const start = async () => {
   try {
-    console.log("Starting...")
-    await app.listen({ port: dbConfig.WEBSERVER_PORT });
-    console.log(`Server listening on port ${dbConfig.WEBSERVER_PORT}`);
+    const port = dbConfig.WEBSERVER_PORT;
+    await app.listen({ port });
+    console.log('╔═══════════════════════════ DARPLEX MONITOR ═══════════════════════════╗');
+    console.log('║                                                                       ║');
+    console.log('║                             VERSION 1.0                               ║');
+    console.log('║                                                                       ║');
+    console.log(`║                        LISTENING ON PORT ${port}                         ║`);
+    console.log('║                                                                       ║');
+    console.log('╚═══════════════════════════════════════════════════════════════════════╝');
   } catch (err) {
     app.log.error(err);
   }

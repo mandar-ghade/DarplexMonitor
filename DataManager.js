@@ -115,8 +115,8 @@ const duplicateSlotExists = async (id, BuildName, PvpClass, slot) => {
     const result = await CustomBuildSlot.findAll({
         where: {
             accountId: id,
-            BuildName: BuildName,
-            PvpClass: PvpClass,
+            BuildName,
+            PvpClass,
             Name: slot.Name,
             Material: slot.Material,
             Amount: slot.Amount,
@@ -130,9 +130,9 @@ const slotOccupied = async (id, BuildName, PvpClass, slot) => {
     const result = await CustomBuildSlot.findAll({
         where: {
             accountId: id,
-            BuildName: BuildName,
-            PvpClass: PvpClass,
-            Name: slot.Name,
+            BuildName,
+            PvpClass,
+            SlotId: slot.SlotId
         }
     });
     return result.length > 0;
@@ -168,11 +168,19 @@ const createSlot = async (id, BuildName, PvpClass, slot) => {
 const updateSlots = async (id, BuildName, PvpClass, slots) => {
     await Promise.all(slots.map(async (slot, i) => {
         slot.SlotId = i + 1;
-        if (await duplicateSlotExists(id, BuildName, PvpClass, slot)) return;
-        if (await slotOccupied(id, BuildName, PvpClass, slot)) {
-            await updateExistingSlot(id, BuildName, PvpClass, slot);
-        } else {
-            await createSlot(id, BuildName, PvpClass, slot);
+        try {
+            if (!slot.Name && !slot.Material) {
+                slot.Name = ''
+                slot.Material = ''
+            }
+            if (await duplicateSlotExists(id, BuildName, PvpClass, slot)) return;
+            if (await slotOccupied(id, BuildName, PvpClass, slot)) {
+                await updateExistingSlot(id, BuildName, PvpClass, slot);
+            } else {
+                await createSlot(id, BuildName, PvpClass, slot);
+            }
+        } catch (err) {
+            console.error(err)
         }
     }));
 }
