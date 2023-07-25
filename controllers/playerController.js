@@ -23,7 +23,6 @@ const {
 } = require("../DataManager.js");
 
 const login = async req => {
-    console.log(req.body)
     let uuid;
     if((!req.body.Uuid && !req.body.Name)) {
         uuid = req.body;
