@@ -27,7 +27,7 @@ const login = async req => {
         startBars: true,
         endBars: false,
         route: 'PlayerAccount - Login',
-        logRoute: true,
+        logRoute: true
     };
     logger.log(settings);
     settings.startBars = false;
@@ -42,10 +42,8 @@ const login = async req => {
     let accountInfo;
     if (!uuid) {
         name = req.body.Name;
-        logger.log(settings, `Name: ${name}`);
         accountInfo = await getAccountByName(name);
     } else {
-        
         accountInfo = await getAccountByUuid(uuid);
     }
     let token = new playerToken.LoginToken();
@@ -60,7 +58,7 @@ const login = async req => {
         } else if (uuid) token.Name = '';
         return token;
     };
-    if(!name) name = accountInfo[0].name;
+    if (!name) name = accountInfo[0].name;
     logger.log(settings, 'Known login');
     (uuid) ? logger.log(settings, `UUID: ${uuid}`) : logger.log(settings, `Name: ${name}`);
     settings.endBars = true;
@@ -93,7 +91,7 @@ const saveCustomBuild = async req => {
         startBars: true,
         endBars: false,
         route: 'PlayerAccount - SaveCustomBuild',
-        logRoute: true,
+        logRoute: true
     };
     logger.log(settings);
     settings.startBars = false;

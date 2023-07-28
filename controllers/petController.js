@@ -47,7 +47,7 @@ const updatePet = async req => {
     const petType = req.body.PetType;
     const petName = req.body.PetName;
     const activePet = await getAccountPetsByType(accountId, petType);
-    if (activePet.length == 0) {
+    if (activePet.length === 0) {
         await createPet(accountId, petType, petName);
     } else {
         await updateActivePet(accountId, petType, petName);
