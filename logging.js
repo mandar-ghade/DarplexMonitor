@@ -2,12 +2,10 @@
 const base = '║                                                   ║';
 
 const formatLog = (message) => {
-    const maxLength = 54;
-    const remainingSpaces = maxLength - message.length - 2;
-    let halfSpaceLength = Math.floor(remainingSpaces / 2)
-    const leftSpaces = ' '.repeat(halfSpaceLength);
-    if (message.length % 2 === 0) halfSpaceLength -= 1;
-    const rightSpaces = ' '.repeat(halfSpaceLength);
+    const maxLength = 51;
+    const remainingSpaces = maxLength - message.length;
+    const leftSpaces = ' '.repeat(Math.floor(remainingSpaces / 2));
+    const rightSpaces = ' '.repeat(Math.ceil(remainingSpaces / 2));
     const formattedMessage = `║${leftSpaces}${message}${rightSpaces}║`;
     return formattedMessage;
 }
