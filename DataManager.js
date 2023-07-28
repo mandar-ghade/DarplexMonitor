@@ -76,7 +76,7 @@ const returnAllPunishments = async (id) => {
             Active: isActive,
             Severity: punishment.severity
         };
-    })
+    });
     return accountPunishments;
 }
 
@@ -234,22 +234,22 @@ const returnAllCustomBuilds = async id => {
 const returnRank = async id => {
     account = await AccountRank.findAll({
         where: { accountId: id }
-    })
-    return account[0].rankIdentifier
+    });
+    return account[0].rankIdentifier;
 }
 
 const updateGems = async (name, gems) => {
     return await Account.update(
         { gems },
         { where: { name } }
-    )
+    );
 }
 
 const updateCoins = async (name, coins) => {
     return await Account.update(
         { coins },
         { where: { name } }
-    )
+    );
 }
 
 const doPunish = async params => {
@@ -263,23 +263,23 @@ const doRemovePunishment = async (accountId, RemovedReason, RemovedAdmin) => {
             RemovedAdmin
         },
         { where: { accountId } }
-    )
+    );
 }
 
 const doPurchaseUnknownSalesPackage = async (name, coins) => {
     return await Account.update(
         { coins },
         { where: { name } }
-    )
+    );
 }
 
 const boostIsActive = startTime => {
-    let date = new Date().getTime()
-    return date < startTime + 3600000
+    let date = new Date().getTime();
+    return date < startTime + 3600000;
 }
 
 const addBoosterToDb = async params => {
-    return await Booster.create({ ...params })
+    return await Booster.create({ ...params });
 }
 
 const filterActiveBoosters = async boosters => {

@@ -23,6 +23,15 @@ const {
 } = require("../DataManager.js");
 
 const login = async req => {
+    const settings = {
+        startBars: true,
+        endBars: false,
+        route: 'PlayerAccount - Login',
+        logRoute: true,
+    };
+    logger.log(settings);
+    settings.startBars = false;
+    settings.logRoute = false;
     let uuid;
     if((!req.body.Uuid && !req.body.Name)) {
         uuid = req.body;
@@ -33,18 +42,29 @@ const login = async req => {
     let accountInfo;
     if (!uuid) {
         name = req.body.Name;
+        logger.log(settings, `Name: ${name}`);
         accountInfo = await getAccountByName(name);
     } else {
+        
         accountInfo = await getAccountByUuid(uuid);
     }
     let token = new playerToken.LoginToken();
-    if (accountInfo.length === 0) { 
+    if (accountInfo.length === 0) {
+        logger.log(settings, 'Unknown login');
+        (uuid) ? logger.log(settings, `UUID: ${uuid}`) : logger.log(settings, `Name: ${name}`);
+        settings.endBars = true;
+        const notFound = (uuid) ? 'UUID' : 'name';
+        logger.log(settings, `${notFound} could not be found.`);
         if (await validUuid(uuid) && uuid) {
             token.Name = await getNameByUuid(uuid);
-        }
+        } else if (uuid) token.Name = '';
         return token;
     };
     if(!name) name = accountInfo[0].name;
+    logger.log(settings, 'Known login');
+    (uuid) ? logger.log(settings, `UUID: ${uuid}`) : logger.log(settings, `Name: ${name}`);
+    settings.endBars = true;
+    logger.log(settings, `Data has been retrieved.`);
     const id = accountInfo[0].id;
     const dbName = accountInfo[0].name;
     const gems = accountInfo[0].gems;
@@ -68,25 +88,34 @@ const login = async req => {
 
 const saveCustomBuild = async req => {
     const { PlayerName, Name, CustomBuildNumber, PvpClass, Slots, ...additionalParams } = req.body;
-    logger.log('PlayerAccount - SaveCustomBuild', ``, true, false, false, true);
     const accountId = await getIdByName(PlayerName);
-    logger.log('', `User: ${PlayerName}`, false, true, false, false);
-    logger.log('', `ID: ${accountId}`, false, true, false, false);
-    logger.log('', `Class: ${PvpClass}`, false, true, false, false);
-    logger.log('', `${Name}`, false, true, false, false);
+    const settings = {
+        startBars: true,
+        endBars: false,
+        route: 'PlayerAccount - SaveCustomBuild',
+        logRoute: true,
+    };
+    logger.log(settings);
+    settings.startBars = false;
+    settings.logRoute = false;
+    logger.log(settings, `User: ${PlayerName}`);
+    logger.log(settings, `ID: ${accountId}`);
+    logger.log(settings, `Class: ${PvpClass}`);
+    logger.log(settings, `${Name}`);
     if (await userBuildExists(accountId, Name, PvpClass)) {
         if (CustomBuildNumber !== 0) additionalParams.CustomBuildNumber = CustomBuildNumber;
-        logger.log('', 'Awaiting build update', false, true, false, false);
+        logger.log(settings, 'Awaiting build update...');
         await updateBuild(accountId, Name, PvpClass, additionalParams);
-        logger.log('', 'Build updated', false, true, false, false);
+        logger.log(settings, 'Build updated!');
     } else {
-        logger.log('', 'Awaiting build creation', false, true, false, false);
+        logger.log(settings, 'Awaiting build creation...');
         await createBuild(accountId, { Name, CustomBuildNumber, PvpClass, ...additionalParams });
-        logger.log('', 'Build created', false, true, false, false);
+        logger.log(settings, 'Build created!');
     }
-    logger.log('', `Awaiting slot updates`, false, true, false, false);
+    logger.log(settings, 'Awaiting slot updates...');
     await updateSlots(accountId, Name, PvpClass, Slots);
-    logger.log('', 'Slots updated', false, true, true, false);
+    settings.endBars = true;
+    logger.log(settings, 'Slots updated');
 }
 
 const gemReward = async req => {

@@ -1,35 +1,33 @@
 
 const base = '║                                                   ║';
 
-function formatLog(message) {
+const formatLog = (message) => {
     const maxLength = 54;
-    const remainingSpace = maxLength - message.length - 2;
-    const leftSpaces = ' '.repeat(Math.floor(remainingSpace / 2));
-    const rightSpaces = ' '.repeat(Math.floor(remainingSpace / 2));
+    const remainingSpaces = maxLength - message.length - 2;
+    const halfSpaceLength = Math.floor(remainingSpaces / 2)
+    const leftSpaces = ' '.repeat(halfSpaceLength);
+    const rightSpaces = (message.length % 2 === 0) ? ' '.repeat(halfSpaceLength - 1) : leftSpaces;
     const formattedMessage = `║${leftSpaces}${message}${rightSpaces}║`;
     return formattedMessage;
 }
 
 
-function logBlankPillars() {
+const logBlankPillars = () => {
     console.log(base);
 }
 
 
-function log(route, message, start, middle, end, logRoute) {
+const log = ({ startBars, endBars, route, logRoute }, message) => {
     const startMessage = '╔══════════════════════ < * > ══════════════════════╗';
-    const endMessage =   '╚═══════════════════════════════════════════════════╝'
-    const formattedRouteMessage = formatLog(route);
-    let formattedMessage = message
-    try {
-        formattedMessage = formatLog(message);
-    } catch (err) {
-
-    }
-    if (start && middle && end) {
+    const endMessage =   '╚═══════════════════════════════════════════════════╝';
+    const formattedRouteMessage = (logRoute) ? formatLog(route) : null;
+    let formattedMessage = '';
+    const middle = (message);
+    if (middle) formattedMessage = message.length <= 51 ? formatLog(message) : message;
+    if (startBars && middle && endBars) {
         console.log(startMessage);
         logBlankPillars();
-        if (logRoute) { 
+        if (formattedRouteMessage) { 
             console.log(formattedRouteMessage);
             logBlankPillars();
         }
@@ -37,39 +35,42 @@ function log(route, message, start, middle, end, logRoute) {
         logBlankPillars();
         console.log(endMessage);
     } 
-    else if (start && middle && !end) {
+    else if (startBars && middle && !endBars) {
         console.log(startMessage);
         logBlankPillars();
-        if (logRoute) {
+        if (formattedRouteMessage) {
             console.log(formattedRouteMessage);
             logBlankPillars();
         }
         console.log(formattedMessage);
         logBlankPillars();
     }
-    else if (start && !middle && !end) {
+    else if (startBars && !middle && !endBars) {
         console.log(startMessage);
         logBlankPillars();
-        if (logRoute) {
+        if (formattedRouteMessage) {
             console.log(formattedRouteMessage);
             logBlankPillars();
         }
-    } else if (!start && !middle && end) {
-        if (logRoute) console.log(formattedRouteMessage);
+    } else if (!startBars && !middle && endBars) {
+        if (formattedRouteMessage) console.log(formattedRouteMessage);
         console.log(endMessage);
-    } else if (start && !middle && end) {
-        logBlankPillars();
+    } else if (startBars && !middle && endBars) {
         console.log(startMessage);
         logBlankPillars();
+        if (formattedRouteMessage) {
+            console.log(formattedRouteMessage);
+        }
+        logBlankPillars();
         console.log(endMessage);
-    } else if (!start && middle && end) {
+    } else if (!startBars && middle && endBars) {
         console.log(formattedMessage);
         logBlankPillars();
-        if (logRoute) console.log(formattedRouteMessage);
+        if (formattedRouteMessage) console.log(formattedRouteMessage);
         console.log(endMessage)
     }
     else if (middle) {
-        if (logRoute) console.log(formattedRouteMessage);
+        if (formattedRouteMessage) console.log(formattedRouteMessage);
         console.log(formattedMessage);
         logBlankPillars();
     }
