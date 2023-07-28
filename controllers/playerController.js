@@ -33,7 +33,7 @@ const login = async req => {
     settings.startBars = false;
     settings.logRoute = false;
     let uuid;
-    if((!req.body.Uuid && !req.body.Name)) {
+    if ((!req.body.Uuid && !req.body.Name)) {
         uuid = req.body;
     } else if (!req.body.Name) {
         uuid = req.body.Uuid;
@@ -143,7 +143,7 @@ const getPunishClient = async req => {
 
 const getMatches = async req => {
     const name = req.body;
-    if(!await getIdByName(name)) return [];
+    if (!await getIdByName(name)) return [];
     return `[${name}]`;
 }
 

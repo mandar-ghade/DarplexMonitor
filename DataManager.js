@@ -52,7 +52,7 @@ const returnAllPunishments = async (id) => {
             where: { accountId: id }
         }
     );
-    if(punishments.length === 0) return [];
+    if (punishments.length === 0) return [];
     const accountPunishments = punishments.map((punishment) => {
         let time = Math.floor(punishment.time.getTime()) - Date.now();
         let removed = punishment.Removed === 1;
@@ -285,7 +285,7 @@ const addBoosterToDb = async params => {
 const filterActiveBoosters = async boosters => {
     let boosterList = {}
     boosters.forEach((booster) => {
-        if(!boostIsActive(booster.startTime)) return;
+        if (!boostIsActive(booster.startTime)) return;
         const startTime = new Date(booster.startTime).toISOString();
         const endTime = new Date(booster.startTime + 3600000).toISOString();
         if (!boosterList[booster.boosterGroup]) {
@@ -334,10 +334,10 @@ const returnNewBoosterStartTime = async boosterGroup => {
         },
         order: [['startTime', 'DESC']],
       });
-    if(boosters.length === 0) {
+    if (boosters.length === 0) {
         return startTime
     }
-    if(!boostIsActive(boosters[0].startTime)) {
+    if (!boostIsActive(boosters[0].startTime)) {
         return startTime
     }
     startTime = boosters[0].startTime + 3600000;
