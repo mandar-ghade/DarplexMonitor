@@ -22,9 +22,7 @@ const getIdByName = async name => {
         attributes: ['id'],
         where: { name }
     });
-    if (id.length === 0) {
-        throw Error('An error occured running the function "getIdByName"');
-    }
+    if (id.length === 0) return []
     return id[0].id;
 }
 
