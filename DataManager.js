@@ -54,10 +54,12 @@ const returnAllPunishments = async (id) => {
     const accountPunishments = punishments.map((punishment) => {
         let time = Math.floor(punishment.time.getTime()) - Date.now();
         let removed = punishment.Removed === 1;
+        let factor = Math.floor(punishment.duration/24);
+        if (factor == 0) factor = punishment.duration/24
         let isActive = (
             punishment.duration < 0
             || Date.now() < punishment.time.getTime()
-            + 86400000 * Math.floor(punishment.duration/24)
+            + 86400000 * factor
         );
         if (removed) isActive = false;
         return {
