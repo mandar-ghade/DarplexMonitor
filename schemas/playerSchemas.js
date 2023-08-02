@@ -59,7 +59,7 @@ const unknownSalesPackageSchema = {
         properties: {
             AccountName: { type: "string" },
             SalesPackageName: { type: "string" },
-            CoinPurchase: { type: "string" },
+            CoinPurchase: { type: "boolean" },
             Cost: { type: "integer" },
             Premium: { type: "boolean" },
         },

@@ -176,11 +176,13 @@ const removePunishment = async req => {
 
 
 const purchaseUnknownSalesPackage = async req => {
-    const { AccountName, Cost } = req.body;
+    const { AccountName, Cost, CoinPurchase } = req.body;
     const accountInfo = await getAccountByName(AccountName);
-    const coins = accountInfo[0].coins;
-    if (coins < Cost) return "InsufficientFunds";
-    await doPurchaseUnknownSalesPackage(AccountName, coins - Cost);
+    let currency = accountInfo[0].gems;
+    if (CoinPurchase) currency = accountInfo[0].coins;
+    if (currency < Cost) return "InsufficientFunds";
+    const newBalance = currency - Cost
+    await doPurchaseUnknownSalesPackage(AccountName, newBalance, CoinPurchase);
     return "Success";
 }
 

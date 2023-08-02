@@ -266,12 +266,12 @@ const doRemovePunishment = async (accountId, RemovedReason, RemovedAdmin) => {
     );
 }
 
-const doPurchaseUnknownSalesPackage = async (name, coins) => {
-    return await Account.update(
-        { coins },
-        { where: { name } }
-    );
+
+const doPurchaseUnknownSalesPackage = async (name, coins, coinPurchase) => {
+    if (coinPurchase) return await updateCoins(name, coins);
+    return await updateGems(name, coins);
 }
+
 
 const boostIsActive = startTime => {
     let date = new Date().getTime();
