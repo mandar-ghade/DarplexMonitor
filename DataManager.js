@@ -235,6 +235,7 @@ const returnRank = async id => {
     account = await AccountRank.findAll({
         where: { accountId: id }
     });
+    if (account.length === 0) return 'PLAYER';
     return account[0].rankIdentifier;
 }
 
