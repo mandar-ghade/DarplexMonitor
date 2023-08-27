@@ -81,7 +81,6 @@ const login = async req => {
     token.DonorToken.Pets = petInfo;
     token.DonorToken.PetNameTagCount = petInfo.length;
     token.DonorToken.CustomBuilds = await returnAllCustomBuilds(id);
-    console.log(token);
     return token;
 }
 
