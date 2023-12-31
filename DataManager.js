@@ -9,6 +9,14 @@ const CustomBuild = db.playerAccounts.CustomBuild;
 const CustomBuildSlot = db.playerAccounts.CustomBuildSlot;
 const ShadowMute = db.chat.ShadowMute;
 const filteredWords = require('./config/filteredWords.json');
+const fs = require('fs')
+const npcs = require('./misc_models/npcs.js');
+const newnpcsnew = require('./misc_models/newnpcsnew.js');
+const hubnews = require('./misc_models/hubnews.js');
+const fetch = require('node-fetch');
+const stats = require('./misc_models/stats.js');
+const items = require('./misc_models/items.js');
+
 
 const getNameById = async id => {
     return await Account.findAll({
@@ -357,6 +365,35 @@ const isShadowMuted = async (accountId, server) => {
     return shadowMute.length > 0 ? shadowMute[0].isShadowMuted : null;
 }
 
+
+
+const dumpIfTablesEmpty = async (sequelize, DataTypes) => {
+    let sql_string = fs.readFileSync('./dumps/account.sql', 'utf8').split(";\n");
+    const npc = await npcs(sequelize, DataTypes).findAll({});
+    const newNpcs = await newnpcsnew(sequelize, DataTypes).findAll({});
+    const hubNews = await hubnews(sequelize, DataTypes).findAll({});
+    const statsTable = await stats(sequelize, DataTypes).findAll({});
+    const itemsTable = await items(sequelize, DataTypes).findAll({});
+    if (npc.length + newNpcs.length + hubNews.length + statsTable.length + itemsTable.length === 0) {
+        let promise = sequelize.query("set FOREIGN_KEY_CHECKS=0"
+        ).then(() => {
+            return sequelize.query("set UNIQUE_CHECKS=0");
+        }).then(() => {
+            return sequelize.query("set SQL_MODE='NO_AUTO_VALUE_ON_ZERO'");
+        }).then(() => {
+            return sequelize.query("set SQL_NOTES=0");
+        });
+        for (let query of sql_string) {
+            query = query.trim();
+            if (query.length !== 0 && !query.match(/\/\*/)) {
+              promise = promise.then(() => {
+                return sequelize.query(query, {raw: true});
+                })
+            }
+          }
+    }
+}
+
 const doFilterMessage = async message => {
     let censoredMessage = message;
     filteredWords.forEach(word => {
@@ -431,5 +468,6 @@ module.exports = {
     filterMessages,
     getModifiedSkills,
     validUuid,
-    getNameByUuid
+    getNameByUuid,
+    dumpIfTablesEmpty
   };

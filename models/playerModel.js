@@ -9,11 +9,13 @@ module.exports = (sequelize, DataTypes) => {
             },
             uuid: {
                 type: DataTypes.STRING(100),
-                allowNull: true
+                allowNull: true,
+                unique: 'uuidIndex',
             },
             name: {
                 type: DataTypes.STRING(40),
-                allowNull: true
+                allowNull: true,
+                unique: 'nameIndex'
             },
             gems: {
                 type: DataTypes.INTEGER(11),

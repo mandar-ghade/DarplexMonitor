@@ -1,5 +1,25 @@
 const dbConfig = require('../config/dbConfig.js');
 const { Sequelize, DataTypes } = require('sequelize');
+const mysql = require("mysql");
+
+const run_pre_sequelize = async () => {
+    const connection = await mysql.createConnection({
+        host: dbConfig.HOST, 
+        port: 3306, 
+        user: dbConfig.USER, 
+        password: dbConfig.PASSWORD
+    })
+    await connection.query(`CREATE DATABASE IF NOT EXISTS \`${dbConfig.DB}\`;`);
+    await connection.query(`CREATE DATABASE IF NOT EXISTS \`server_stats\`;`);
+    await connection.query(`CREATE DATABASE IF NOT EXISTS \`player_stats\`;`);
+    await connection.query(`CREATE DATABASE IF NOT EXISTS \`mineplex\`;`);
+    await connection.query(`CREATE DATABASE IF NOT EXISTS \`mineplex_stats\`;`);
+    await connection.query(`CREATE DATABASE IF NOT EXISTS \`mssql_mock\`;`);
+    await connection.end();
+}
+
+run_pre_sequelize()
+
 const sequelize = new Sequelize(
     dbConfig.DB,
     dbConfig.USER,
@@ -7,6 +27,9 @@ const sequelize = new Sequelize(
     {
         host: dbConfig.HOST,
         dialect: dbConfig.dialect,
+        dialectOptions: {
+            multipleStatements: true
+        },
         logging: false,
         pool: {
             max: dbConfig.pool.max,
@@ -18,11 +41,20 @@ const sequelize = new Sequelize(
 );
 
 
+
+const initializeAccountTables = require('../misc_models/init-models.js');
+const initializePlayerStatsTables = require('../player_stats/init-models.js');
+const initializeServerStatsTables = require('../server_stats/init-models.js');
+initializeAccountTables(sequelize);
+initializePlayerStatsTables(sequelize);
+initializeServerStatsTables(sequelize);
+
+
 sequelize.authenticate()
 .then(() => {
-    console.log("Sequelize connected")
+    console.log("Sequelize connected");
 }).catch((err) => {
-    console.log("Error: " + err)
+    console.log("Error: " + err);
 });
 
 
@@ -35,6 +67,11 @@ db.accountPets = require("./petModel")(sequelize, DataTypes, db.playerAccounts);
 db.boosters = require("./boosterModel")(sequelize, DataTypes, db.playerAccounts);
 
 
-db.sequelize.sync({ force: false })
-.then(() => { console.log("Resync completed."); });
+db.sequelize.sync({ force: true })
+.then(() => { 
+    console.log("Resync completed."); 
+    const DataManager = require('../DataManager.js');
+    DataManager.dumpIfTablesEmpty(sequelize, DataTypes);
+});
+
 module.exports = db;

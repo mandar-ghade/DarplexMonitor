@@ -12,10 +12,14 @@ app.register(chatRoute)
 app.register(petRoute, { prefix: '/Pets' })
 app.register(boosterRoute, { prefix: '/booster' })
 app.register(dominateRoute, { prefix: '/Dominate' })
+
+
+
+
 const start = async () => {
   try {
     const port = dbConfig.WEBSERVER_PORT;
-    await app.listen({ port });
+    await app.listen({ port: port, host: '0.0.0.0' });
     console.log('╔═══════════════════════════ DARPLEX MONITOR ═══════════════════════════╗');
     console.log('║                                                                       ║');
     console.log('║                             VERSION 1.0                               ║');
