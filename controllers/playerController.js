@@ -19,7 +19,11 @@ const {
     doRemovePunishment,
     doPurchaseUnknownSalesPackage,
     validUuid,
-    getNameByUuid
+    getNameByUuid,
+    updateAccountPurchases,
+    ownsSalesPackage,
+    retrieveSalesPackages,
+    retrieveUnknownSalesPackages
 } = require("../DataManager.js");
 
 const login = async req => {
@@ -81,6 +85,8 @@ const login = async req => {
     token.DonorToken.Pets = petInfo;
     token.DonorToken.PetNameTagCount = petInfo.length;
     token.DonorToken.CustomBuilds = await returnAllCustomBuilds(id);
+    token.DonorToken.SalesPackages = await retrieveSalesPackages(id);
+    token.DonorToken.UnknownSalesPackages = await retrieveUnknownSalesPackages(id);
     return token;
 }
 
@@ -120,6 +126,7 @@ const gemReward = async req => {
     const name = req.body.Name;
     const amount = req.body.Amount;
     const accountInfo = await getAccountByName(name);
+    if (accountInfo.length === 0) return "False";
     await updateGems(name, accountInfo[0].gems + amount);
     return "True";
 }
@@ -128,6 +135,7 @@ const coinReward = async req => {
     const name = req.body.Name;
     const amount = req.body.Amount;
     const accountInfo = await getAccountByName(name);
+    if (accountInfo.length === 0) return "False";
     await updateCoins(name, accountInfo[0].coins + amount);
     return "True";
 }
@@ -176,15 +184,31 @@ const removePunishment = async req => {
 
 
 const purchaseUnknownSalesPackage = async req => {
-    const { AccountName, Cost, CoinPurchase } = req.body;
+    const { AccountName, Cost, CoinPurchase, SalesPackageName } = req.body;
     const accountInfo = await getAccountByName(AccountName);
+    if (accountInfo.length === 0) return "Failed";
+    const checkParams = {};
+    checkParams.packageName = SalesPackageName; 
+    // if (await ownsSalesPackage(AccountName, checkParams)) return "AlreadyOwns";
     let currency = accountInfo[0].gems;
     if (CoinPurchase) currency = accountInfo[0].coins;
     if (currency < Cost) return "InsufficientFunds";
-    const newBalance = currency - Cost
+    const newBalance = currency - Cost;
     await doPurchaseUnknownSalesPackage(AccountName, newBalance, CoinPurchase);
+    await updateAccountPurchases(AccountName, checkParams);
     return "Success";
 }
+
+const purchaseKnownSalesPackage = async req => {
+    const { AccountName, SalesPackageId } = req.body;
+    const accountInfo = await getAccountByName(AccountName);
+    if (accountInfo.length === 0) return "Failed";
+    const checkParams = { packageId: SalesPackageId };
+    // if (await ownsSalesPackage(AccountName, checkParams)) return "AlreadyOwns";
+    await updateAccountPurchases(AccountName, checkParams);
+    return "Success"
+}
+
 
 
 
@@ -197,5 +221,6 @@ module.exports = {
     getMatches,
     punish,
     removePunishment,
-    purchaseUnknownSalesPackage
+    purchaseUnknownSalesPackage,
+    purchaseKnownSalesPackage
 }

@@ -70,6 +70,12 @@ const playerRoutePlugin = (fastify, _, done) => {
         handler: playerController.purchaseUnknownSalesPackage,
         schema: { body: playerSchema.unknownSalesPackageSchema.body }
     });
+    fastify.route({
+        method: 'POST',
+        url: '/PurchaseKnownSalesPackage',
+        handler: playerController.purchaseKnownSalesPackage,
+        schema: { body: playerSchema.knownSalesPackageSchema.body }
+    });
     done();
 };
 module.exports = playerRoutePlugin;

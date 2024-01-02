@@ -46,9 +46,24 @@ function LoginToken () {
     this.Punishments = []
 };
 
+function TransactionToken () {
+    this.Date = '';
+    this.SalesPackageName = '';
+    this.Gems = 0;
+    this.Coins = 0;
+}
+
+function CoinTransactionToken () {
+    this.Date = Date.now();
+    this.Source = '';
+    this.Amount = 0;
+}
+
+
 
 module.exports = {
     LoginToken,
     DonorToken,
-    ClientClassToken
+    ClientClassToken,
+    TransactionToken
 };

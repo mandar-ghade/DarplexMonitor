@@ -7,6 +7,7 @@ const Booster = db.boosters.Booster;
 const AccountRank = db.playerAccounts.AccountRank;
 const CustomBuild = db.playerAccounts.CustomBuild;
 const CustomBuildSlot = db.playerAccounts.CustomBuildSlot;
+const AccountPurchase = db.playerAccounts.AccountPurchase;
 const ShadowMute = db.chat.ShadowMute;
 const filteredWords = require('./config/filteredWords.json');
 const fs = require('fs')
@@ -443,6 +444,65 @@ const getNameByUuid = async uuid => {
 }
 
 
+// module.exports = (sequelize, DataTypes, playerAccounts) => {
+//     const Transaction = sequelize.define(
+//         'transaction',
+//         {
+//             accountId: {
+//                 type: DataTypes.INTEGER(11),
+//                 references: {
+//                     model: playerAccounts.Account,
+//                     key: 'id',
+//                     onDelete: 'CASCADE',
+//                     onUpdate: 'CASCADE'
+//                 }
+//             },
+//             date: {
+//                 type: DataTypes.BIGINT(20)
+//             },
+//             name: {
+//                 type: DataTypes.STRING(255),
+//                 allowNull: true
+//             },
+//             gems: {
+//                 type: DataTypes.INTEGER,
+//                 defaultValue: 0
+//             },
+//             coins: { 
+//                 type: DataTypes.INTEGER,
+//                 defaultValue: 0
+//             }
+//         }, { timestamps: false }
+//     );
+
+
+const updateAccountPurchases = async (name, createParams) => {
+    const accountId = await getIdByName(name);
+    createParams.accountId = accountId;
+    await AccountPurchase.create(
+        { ...createParams }
+    );
+}
+
+const ownsSalesPackage = async (name, checkParams) => {
+    const accountId = await getIdByName(name);
+    const result = await AccountPurchase.findAll({
+        where: { accountId, ...checkParams } 
+    });
+    return result.length !== 0;
+}
+
+const retrieveSalesPackages = async id => {
+    const packages = await AccountPurchase.findAll({ where: { accountId: id, packageName: '' } });
+    return packages.map((package) => { return package.packageId });
+}
+
+const retrieveUnknownSalesPackages = async id => {
+    const packages = await AccountPurchase.findAll({ where: { accountId: id, packageId: null} });
+    return packages.map((package) => { return package.packageName });
+}
+
+
 module.exports = {
     getIdByName,
     getAccountByName,
@@ -469,5 +529,9 @@ module.exports = {
     getModifiedSkills,
     validUuid,
     getNameByUuid,
-    dumpIfTablesEmpty
+    dumpIfTablesEmpty,
+    updateAccountPurchases,
+    ownsSalesPackage,
+    retrieveSalesPackages,
+    retrieveUnknownSalesPackages
   };

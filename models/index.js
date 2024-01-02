@@ -65,9 +65,10 @@ db.playerAccounts = require("./playerModel.js")(sequelize, DataTypes);
 db.chat = require("./chatModel.js")(sequelize, DataTypes, db.playerAccounts);
 db.accountPets = require("./petModel")(sequelize, DataTypes, db.playerAccounts);
 db.boosters = require("./boosterModel")(sequelize, DataTypes, db.playerAccounts);
+db.transactions = require("./transactionModel.js")(sequelize, DataTypes, db.playerAccounts);
 
 
-db.sequelize.sync({ force: true })
+db.sequelize.sync({ force: false })
 .then(() => { 
     console.log("Resync completed."); 
     const DataManager = require('../DataManager.js');

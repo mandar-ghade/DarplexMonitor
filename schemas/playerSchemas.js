@@ -65,6 +65,16 @@ const unknownSalesPackageSchema = {
         },
     },
 };
+const knownSalesPackageSchema = {
+    body: {
+        type: "object",
+        properties: {
+            AccountName: { type: "string" },
+            UsingCredits: { type: "boolean" },
+            SalesPackageId: { type: "integer" }
+        }
+    }
+}
 const clientClassSchema = {
     body: {
         type: "object",
@@ -112,5 +122,6 @@ module.exports = {
     getMatchesSchema,
     punishSchema,
     removePunishmentSchema,
-    unknownSalesPackageSchema
+    unknownSalesPackageSchema,
+    knownSalesPackageSchema
 };

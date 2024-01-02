@@ -233,6 +233,29 @@ module.exports = (sequelize, DataTypes) => {
         },
         { timestamps: false }
     );
+    const AccountPurchase = sequelize.define(
+        'accountpurchase',
+        {
+            accountId: {
+                type: DataTypes.INTEGER(11),
+                references: {
+                    model: Account,
+                    key: 'id',
+                    onDelete: 'CASCADE',
+                    onUpdate: 'CASCADE'
+                }
+            },
+            packageName: {
+                type: DataTypes.STRING(40),
+                defaultValue: ''
+            },
+            packageId: {
+                type: DataTypes.INTEGER,
+                allowNull: true
+            }
+        }, { timestamps: false }
+    );
+    AccountPurchase.removeAttribute('id');
     Account.hasOne(AccountRank, {
         onDelete: 'CASCADE',
         onUpdate: 'CASCADE'
@@ -249,15 +272,21 @@ module.exports = (sequelize, DataTypes) => {
         onDelete: 'CASCADE',
         onUpdate: 'CASCADE'
     });
+    Account.hasOne(AccountPurchase, {
+        onDelete: 'CASCADE',
+        onUpdate: 'CASCADE'
+    });
     AccountRank.belongsTo(Account);
     AccountPunishment.belongsTo(Account);
     CustomBuild.belongsTo(Account);
     CustomBuildSlot.belongsTo(Account);
+    AccountPurchase.belongsTo(Account);
     return {
         Account,
         AccountRank,
         AccountPunishment,
         CustomBuild,
-        CustomBuildSlot
+        CustomBuildSlot,
+        AccountPurchase
     };
 };
