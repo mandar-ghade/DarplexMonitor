@@ -1,6 +1,6 @@
 Darplex Monitor
 ============
-[![GitHub Stars](https://img.shields.io/github/stars/GX2H912/DarplexMonitor.svg)](https://github.com/GX2H912/DarplexMonitor/stargazers) [![GitHub Issues](https://img.shields.io/github/issues/GX2H912/DarplexMonitor.svg)](https://github.com/GX2H912/DarplexMonitor/issues) [![Current Version](https://img.shields.io/badge/version-1.0-green.svg)](https://github.com/GX2H912/DarplexMonitor) [![Live Demo](https://img.shields.io/badge/demo-online-green.svg)](https://GX2H912.com/chat) [![Gitter](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/GX2H912/DarplexMonitor?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge)
+[![GitHub Stars](https://img.shields.io/github/stars/mandar-ghade/DarplexMonitor.svg)](https://github.com/mandar-ghade/DarplexMonitor/stargazers) [![GitHub Issues](https://img.shields.io/github/issues/mandar-ghade/DarplexMonitor.svg)](https://github.com/mandar-ghade/DarplexMonitor/issues) [![Current Version](https://img.shields.io/badge/version-1.0-green.svg)](https://github.com/mandar-ghade/DarplexMonitor) [![Live Demo](https://img.shields.io/badge/demo-online-green.svg)](https://mandar-ghade.com/chat) [![Gitter](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/mandar-ghade/DarplexMonitor?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge)
 
 Join our discord server by pressing this image:
 
@@ -16,7 +16,7 @@ This is a node.js chat application powered by sequelize and Fastify that provide
 
 Whether you use this project, have learned something from it, or just like it, please consider supporting it by buying me a coffee, so I can dedicate more time on open-source projects like this :)
 
-<a href="https://www.buymeacoffee.com/GX2H912" target="_blank"><img src="https://www.buymeacoffee.com/assets/img/custom_images/orange_img.png" alt="Buy Me A Coffee" style="height: auto !important;width: auto !important;" ></a>
+<a href="https://www.buymeacoffee.com/mandar-ghade" target="_blank"><img src="https://www.buymeacoffee.com/assets/img/custom_images/orange_img.png" alt="Buy Me A Coffee" style="height: auto !important;width: auto !important;" ></a>
 
 --- -->
 
@@ -34,7 +34,7 @@ Whether you use this project, have learned something from it, or just like it, p
 Install node.js.
 
 Clone this repository to your desktop using 
-`git clone https://github.com/GX2H912/DarplexMonitor.git`. Next, change directory to DarplexMonitor using `cd DarplexMonitor`, then use `npm install` to install all the dependencies.
+`git clone https://github.com/mandar-ghade/DarplexMonitor.git`. Next, change directory to DarplexMonitor using `cd DarplexMonitor`, then use `npm install` to install all the dependencies.
 
 You might want to look into `config/dbConfig.js` to make change the port under the variable `WEBSERVER_PORT` (default is 1000), as well as changing the credentials to your SQL database.
 
@@ -90,7 +90,7 @@ If you experience issues with Punishments, **delete your existing table in MySQL
 ## TODO
 - Logging support.
 - Multi-part YouTube series for Plex setup from scratch (unlikely).
-- Upload MySQL database file for portable installation.
+- Upload MySQL database file for portable installation. ✅
 - Upload Redis scripts for easy ServerMonitor and ServerGroup installation.
 - Upload ServerMonitor scripts for Windows.
 
@@ -99,6 +99,6 @@ If you experience issues with Punishments, **delete your existing table in MySQL
 
 
 ## License
->You can check out the full license [here](https://github.com/GX2H912/DarplexMonitor/blob/master/LICENSE)
+>You can check out the full license [here](https://github.com/mandar-ghade/DarplexMonitor/blob/master/LICENSE)
 
 This project is licensed under the terms of the **MIT** license.
