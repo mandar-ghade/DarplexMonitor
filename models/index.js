@@ -61,7 +61,7 @@ sequelize.authenticate()
 const db = {};
 db.Sequelize = Sequelize;
 db.sequelize = sequelize;
-db.playerAccounts = require("./playerModel.js")(sequelize, DataTypes);
+db.playerAccounts = require("./playerModel.js")(sequelize, DataTypes, Sequelize);
 db.chat = require("./chatModel.js")(sequelize, DataTypes, db.playerAccounts);
 db.accountPets = require("./petModel")(sequelize, DataTypes, db.playerAccounts);
 db.boosters = require("./boosterModel")(sequelize, DataTypes, db.playerAccounts);

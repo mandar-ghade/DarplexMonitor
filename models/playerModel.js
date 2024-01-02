@@ -1,4 +1,4 @@
-module.exports = (sequelize, DataTypes) => {
+module.exports = (sequelize, DataTypes, Sequelize) => {
     const Account = sequelize.define(
         'account',
         {
@@ -69,11 +69,13 @@ module.exports = (sequelize, DataTypes) => {
         {
             id: {
                 type: DataTypes.INTEGER(11),
+                allowNull: false,
                 primaryKey: true,
                 autoIncrement: true
             },
             accountId: {
                 type: DataTypes.INTEGER(11),
+                allowNull: false,
                 references: {
                     model: Account,
                     key: 'id',
@@ -82,25 +84,33 @@ module.exports = (sequelize, DataTypes) => {
                 }
             },
             category: {
-                type: DataTypes.STRING(255)
+                type: DataTypes.STRING(255),
+                allowNull: false
             },
             sentence: {
-                type: DataTypes.STRING(255)
+                type: DataTypes.STRING(255),
+                allowNull: false
             },
             reason: {
-                type: DataTypes.STRING(255)
+                type: DataTypes.STRING(255),
+                allowNull: false
             },
             time: {
-                type: DataTypes.DATE
+                type: DataTypes.DATE,
+                allowNull: false,
+                defaultValue: Sequelize.fn('current_timestamp')
             },
             duration: {
-                type: DataTypes.DOUBLE
+                type: DataTypes.DOUBLE,
+                allowNull: false
             },
             admin: {
-                type: DataTypes.STRING(255)
+                type: DataTypes.STRING(255),
+                allowNull: false
             },
             severity: {
-                type: DataTypes.INTEGER(11)
+                type: DataTypes.INTEGER(11),
+                allowNull: false
             },
             Removed: {
                 type: DataTypes.INTEGER(1),
