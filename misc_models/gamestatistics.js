@@ -26,7 +26,7 @@ module.exports = function(sequelize, DataTypes) {
     endTime: {
       type: DataTypes.DATE,
       allowNull: false,
-      defaultValue: "0000-00-00 00:00:00"
+      defaultValue: "2023-01-01 00:00:00"
     }
   }, {
     sequelize,
